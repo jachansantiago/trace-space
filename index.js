@@ -19,9 +19,9 @@ console.log(projectTable);
 //<span class="glyphicons glyphicons-remove"></span>
 
 testMenu = [
-	{"name" : "Project 1"},
-	{"name" : "Project 2"},
-	{"name" : "Project 3"},
+	{"id": 0, "name" : "Project 1"},
+	{"id": 1, "name" : "Project 2"},
+	{"id": 2, "name" : "Project 3"},
 ]
 
 
@@ -48,7 +48,7 @@ var createMenuItem = function(project){
 		link.appendChild(name);
 		li.appendChild(link);
 		li.appendChild(sp);
-		link.href = '/sketch/'+ project.name;
+		link.href = '/sketch.html?projectId='+ project.id;
 		// li.id = snapshot.key;
 		link.name = project.name.toLowerCase();
 		li.name = project.name.toLowerCase();
