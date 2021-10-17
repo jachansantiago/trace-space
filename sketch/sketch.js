@@ -183,13 +183,12 @@ function gotFile(file){
     if(file.type === "image"){
         var img = createImg(file.data);
         img.hide();
-
-				var newId = plans.length;
-				uploadPhoto(newId, file.file, plans, img);
-				console.log(file.file);
-        // plans.push(new TraceSpacePlan(300, 300, 100, 100, img, newId));
+        var newId = plans.length;
+		// uploadPhoto(newId, file.file, plans, img);
+		console.log(file.file);
+        plans.push(new TraceSpacePlan(300, 300, 100, 100, img, newId));
 				// firebase.database().ref('project1/layers/' + newId).set(plans[newId].export());
-        // plans[0].display();
+        plans[0].display();
     }
 }
 
@@ -373,56 +372,17 @@ function swap_layers(layer_1, layer_2){
 
 }
 
-// var layerRef = firebase.database().ref("projects/" + projectId + "/layers");
+function parseQuery(queryString) {
+    var query = {};
+    var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+    for (var i = 0; i < pairs.length; i++) {
+        var pair = pairs[i].split('=');
+        query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+    }
+    return query;
+}
 
-// layerRef.on("child_added", function(childSnapshot, prevChildKey){
-// 		var id = childSnapshot.key
-// 		var item = childSnapshot.val();
-// 		var img_url;
-// 		var new_img;
-// 		var newPlan;
-// 		console.log("arrive id - > ", id);
-// 		if(id == plans.length){
-// 			if(item._type === "layer"){
-// 				var newLayer = new TraceSpaceLayer(300,300,300,300, G_image, id);
-// 				newLayer.import(item);
-// 				plans.push(newLayer);
-// 			}else{
-// 				img_url = item._image_download_url;
-// 				// console.log(item);
-// 				new_img = loadImage(img_url);
-// 				//var img = image(new_img, 0, 0);
-// 				//img.src = img_url;
-// 				//console.log(img);
-// 				//var img = createImg(img_url);
-// 				//img.hide();
+testProjects = [{ "id": 0, "name": "Project 1", "image": "/trace-space/imgs/house_1.jpeg"}]
+query = parseQuery(window.location.search)
 
-// 				newPlan = new TraceSpacePlan(300,300,300,300, new_img, id, img_url);
-// 				newPlan.import(item);
-// 				plans.push(newPlan);
-// 			}
-
-// 		}
-
-// })
-
-
-// layerRef.on("child_changed", function(childSnapshot){
-// 	var id = childSnapshot.key;
-// 	plans[id].import(childSnapshot.val());
-// })
-
-
-// layerRef.on("child_removed", function(oldChildSnapshot){
-// 		// var id = oldChildSnapshot.key
-// 		// console.log("id -> ", id);
-// 		// var x = plans.length  - 1 - id;
-// 		// var temp;
-// 		// for( var i = 0; i < x; i++ ){
-// 		// 	swap_layers(plans[id], plans[id + 1]);
-// 		// 	id++;
-// 		// }
-// 		plans.pop();
-// 		//console.log(id, " was deleted");
-// 		console.log(plans);
-// })
+// if query.

@@ -61,7 +61,7 @@ class TraceSpacePlan{
 
 			this.updateDim = function(delta_x, delta_y) {
 				this.setDimensions(_width + delta_x, _height + delta_y);
-				this.updateDB();
+				// this.updateDB();
 			}
 
 			this.setMenuOption = function (new_option){
@@ -92,7 +92,7 @@ class TraceSpacePlan{
 			this.update = function(delta_x, delta_y) {
 				this.setMenuCoords(_coord_x + delta_x, _coord_y + delta_y);
 				this.setCoords(_coord_x + delta_x, _coord_y + delta_y);
-				this.updateDB();
+				// this.updateDB();
 			}
 
 			this.export = function(){
