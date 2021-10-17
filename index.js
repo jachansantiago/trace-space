@@ -48,7 +48,7 @@ var createMenuItem = function(project){
 		link.appendChild(name);
 		li.appendChild(link);
 		li.appendChild(sp);
-		link.href = '/trace-space/sketch.html?projectId='+ project.id;
+		link.href = '/trace-space/sketch?projectId='+ project.id;
 		// li.id = snapshot.key;
 		link.name = project.name.toLowerCase();
 		li.name = project.name.toLowerCase();
