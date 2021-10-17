@@ -1,41 +1,32 @@
+class TraceSpacePlan{
 
-class TraceSpaceLayer{
-
-		constructor(init_x, init_y, init_width, init_heiht){
+		constructor(init_x, init_y, init_width, init_height, init_img, init_id, init_downloadUrl){
 			/** These are private attributes **/
+			var _id = init_id;
 			var _coord_x = init_x;
 			var _coord_y = init_y;
 			var _width = init_width;
-			var _height = init_heiht;
-			var _menu = new MenuObject(_coord_x, _width, _coord_y, _height);
-			var _image;
+			var _height = init_height;
+			var _menu = new PlanMenuObject(_coord_x, _width, _coord_y, _height);
+			var _image = init_img;
 			var _color_line = color('black');
-			// This set of code lines create layer styling
-			this.fillLayer = function () {
-				_image = createImage(_width, _height);
-				_image.loadPixels();
-				for(var l = 0; l < _width; l++){
-						for(var m = 0; m < _height; m++){
-								if(l == 0 || l == _width - 1 || m == 0 || m == _height - 1 ){
-										_image.set(l, m, color(0, 0, 0))
-								}else{
-										_image.set(l, m, color(255, 255, 181))
-								}
-
-						}
-				}
-				_image.updatePixels();
-				return;
-			}
-
+			var _image_download_url = init_downloadUrl;
+			var _last_url = "";
 
 
 			this.display = function () {
-				blend(_image, 0, 0, _width, _height , _coord_x, _coord_y, _width, _height, DARKEST);
+				image(_image, _coord_x, _coord_y, _width, _height);
 			}
 
 
 			/** These are public functions to access private attributes **/
+			this.getId = function(){
+				return _id;
+			}
+
+			this.setId = function (new_id){
+				_id = new_id;
+			}
 
 			this.getCoords = function () {
 
@@ -68,13 +59,22 @@ class TraceSpaceLayer{
 
 			}
 
+			this.updateDim = function(delta_x, delta_y) {
+				this.setDimensions(_width + delta_x, _height + delta_y);
+				this.updateDB();
+			}
+
 			this.setMenuOption = function (new_option){
 					return _menu.setOption(new_option);
 			}
 
+			this.menuIsShow = function (){
+				return _menu.isShow();
+			}
+
 			this.setMenuCoords = function(new_x, new_y){
 
-					return _menu.updatePosition(new_x, new_y);
+					return _menu.updatePosition(new_x, new_y, _width, _height);
 			}
 
 			this.getMenuOption = function () {
@@ -92,9 +92,40 @@ class TraceSpaceLayer{
 			this.update = function(delta_x, delta_y) {
 				this.setMenuCoords(_coord_x + delta_x, _coord_y + delta_y);
 				this.setCoords(_coord_x + delta_x, _coord_y + delta_y);
+				this.updateDB();
 			}
 
-			this.fillLayer();
+			this.export = function(){
+				return {
+					"_type" : "image",
+					"_coord_x" : _coord_x,
+					"_coord_y" : _coord_y,
+					"_width" : _width,
+					"_height" : _height,
+					"_image_download_url" : _image_download_url
+				}
+			}
+
+			this.import = function(DBObject){
+					_last_url = _image_download_url;
+					_coord_x = DBObject._coord_x;
+					_coord_y = DBObject._coord_y;
+					_width = DBObject._width;
+					_height= DBObject._height;
+					_image_download_url = DBObject._image_download_url;
+					this.setMenuCoords(_coord_x , _coord_y);
+					if(_last_url !== _image_download_url)
+						this.loadPhoto();
+			}
+
+			this.loadPhoto = function() {
+				_image = loadImage(_image_download_url);
+			}
+
+			// this.updateDB = function(){
+			// 	firebase.database().ref('projects/' + projectId + '/layers/' + _id).set(this.export());
+			// }
+
 			this.display();
 		}
 
