@@ -272,16 +272,16 @@ function mousePressed(){
 					planOnScope = -1;
 					planSelected = -1;
 					console.log("id -> ", delete_plan);
-					var x = plans.length  - 1 - delete_plan;
 					plans[delete_plan].hideMenu();
-					for( var i = 0; i < x; i++ ){
-						swap_layers(plans[delete_plan], plans[delete_plan + 1]);
-						delete_plan++;
+					for( var i = delete_plan; i < plans.length - 1 ; i++ ){
+						swap_layers(plans[i], plans[i + 1]);
 					}
 
 					//plans.pop();
+					plans.pop();
 					// firebase.database().ref('projects/'+ projectId +'/layers/' + delete_plan).set(null);
 					delete_plan = -1;
+
 
 					return;
 				}else if(plans[planOnScope].getMenuOption() === 'top'){
